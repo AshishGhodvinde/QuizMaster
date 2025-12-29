@@ -1,0 +1,13 @@
+{
+  "name": "quiz-frontend-root",
+  "version": "1.0.0",
+  "description": "Root package.json for quiz application frontend",
+  "scripts": {
+    "dev": "cd quiz-app && npm run dev",
+    "build": "cd quiz-app && npm run build",
+    "preview": "cd quiz-app && npm run preview",
+    "install-all": "cd quiz-app && npm install"
+  },
+  "author": "",
+  "license": "ISC"
+}

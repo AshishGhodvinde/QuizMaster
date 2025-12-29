@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15
+    container_name: quiz_db
+    environment:
+      POSTGRES_DB: quizdb
+      POSTGRES_USER: quizuser
+      POSTGRES_PASSWORD: quizpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - quiz_network
+
+  # Spring Boot Backend
+  backend:
+    build: ./backend
+    container_name: quiz_backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/quizdb
+      SPRING_DATASOURCE_USERNAME: quizuser
+      SPRING_DATASOURCE_PASSWORD: quizpass
+    depends_on:
+      - db
+    networks:
+      - quiz_network
+
+  # React Frontend
+  frontend:
+    build: ./frontend/quiz-app
+    container_name: quiz_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - quiz_network
+
+volumes:
+  postgres_data:
+
+networks:
+  quiz_network:
+    driver: bridge
