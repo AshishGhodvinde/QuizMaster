@@ -1,8 +1,6 @@
 package com.quiz.application.config;
 
-import com.quiz.application.model.Question;
-import com.quiz.application.model.Quiz;
-import com.quiz.application.model.User;
+import com.quiz.application.model.*;
 import com.quiz.application.repository.QuestionRepository;
 import com.quiz.application.repository.QuizRepository;
 import com.quiz.application.repository.UserRepository;
@@ -10,7 +8,12 @@ import com.quiz.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
 public class DataLoader implements CommandLineRunner {
 
     @Autowired
@@ -38,84 +41,236 @@ public class DataLoader implements CommandLineRunner {
             userService.createUser("user", "user@example.com", "user123", "USER");
             System.out.println("Sample user created with username: user and password: user123");
         }
-
-        // Create sample quizzes if not exists
-        if (quizRepository.count() == 0) {
-            User adminUser = userService.getUserByUsername("admin").orElse(null);
-            
-            if (adminUser != null) {
-                createTechnicalQuiz(adminUser);
-                createGeographyQuiz(adminUser);
-                createScienceQuiz(adminUser);
-                createHistoryQuiz(adminUser);
-                createSportsQuiz(adminUser);
-                
-                System.out.println("Created 5 sample quizzes with multiple questions each");
-            }
-        }
+        
+        System.out.println("DataLoader completed successfully!");
     }
 
     private void createTechnicalQuiz(User adminUser) {
         Quiz quiz = Quiz.builder()
                 .title("Java Programming Quiz")
                 .description("Test your knowledge of Java programming fundamentals")
+                .category(QuizCategory.JAVA)
+                .difficulty(Difficulty.MEDIUM)
+                .timeLimitMinutes(30)
+                .status(QuizStatus.PUBLISHED)
+                .visibility(QuizVisibility.PUBLIC)
+                .allowMultipleAttempts(true)
+                .randomizeQuestions(false)
+                .randomizeOptions(false)
+                .negativeMarking(false)
+                .passingPercentage(60)
+                .maxAttempts(3)
                 .createdBy(adminUser)
                 .build();
         
         quiz = quizRepository.save(quiz);
         
-        // Java Questions
-        Question q1 = Question.builder()
+        List<Question> questions = new ArrayList<>();
+        
+        // Single Correct Questions
+        questions.add(Question.builder()
                 .quiz(quiz)
                 .questionText("Which of the following is not a Java keyword?")
+                .questionType(QuestionType.SINGLE_CORRECT)
                 .optionA("final")
                 .optionB("static")
                 .optionC("integer")
                 .optionD("void")
                 .correctAnswer("C")
-                .build();
+                .explanation("integer is not a Java keyword. 'int' is the correct keyword for integer data type.")
+                .questionOrder(1)
+                .marks(1)
+                .build());
         
-        Question q2 = Question.builder()
+        questions.add(Question.builder()
                 .quiz(quiz)
                 .questionText("What is the size of an int variable in Java?")
+                .questionType(QuestionType.SINGLE_CORRECT)
                 .optionA("16 bit")
                 .optionB("32 bit")
                 .optionC("64 bit")
                 .optionD("8 bit")
                 .correctAnswer("B")
-                .build();
+                .explanation("In Java, an int variable is 32 bits or 4 bytes.")
+                .questionOrder(2)
+                .marks(1)
+                .build());
         
-        Question q3 = Question.builder()
-                .quiz(quiz)
-                .questionText("Which collection class allows null values and null keys?")
-                .optionA("HashMap")
-                .optionB("HashTable")
-                .optionC("TreeMap")
-                .optionD("LinkedHashMap")
-                .correctAnswer("A")
-                .build();
-        
-        Question q4 = Question.builder()
+        questions.add(Question.builder()
                 .quiz(quiz)
                 .questionText("What is the default value of a boolean variable in Java?")
+                .questionType(QuestionType.SINGLE_CORRECT)
                 .optionA("true")
                 .optionB("false")
                 .optionC("null")
                 .optionD("0")
                 .correctAnswer("B")
-                .build();
+                .explanation("The default value of a boolean variable in Java is false.")
+                .questionOrder(3)
+                .marks(1)
+                .build());
         
-        Question q5 = Question.builder()
+        questions.add(Question.builder()
                 .quiz(quiz)
                 .questionText("Which method is used to start a thread in Java?")
+                .questionType(QuestionType.SINGLE_CORRECT)
                 .optionA("run()")
                 .optionB("start()")
                 .optionC("execute()")
                 .optionD("init()")
                 .correctAnswer("B")
-                .build();
+                .explanation("The start() method is used to start a thread in Java, which internally calls the run() method.")
+                .questionOrder(4)
+                .marks(1)
+                .build());
         
-        questionRepository.saveAll(java.util.List.of(q1, q2, q3, q4, q5));
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("Which exception is thrown when divide by zero occurs?")
+                .questionType(QuestionType.SINGLE_CORRECT)
+                .optionA("NullPointerException")
+                .optionB("ArrayIndexOutOfBoundsException")
+                .optionC("ArithmeticException")
+                .optionD("NumberFormatException")
+                .correctAnswer("C")
+                .explanation("ArithmeticException is thrown when an exceptional arithmetic condition has occurred, such as divide by zero.")
+                .questionOrder(5)
+                .marks(1)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("What is the superclass of all classes in Java?")
+                .questionType(QuestionType.SINGLE_CORRECT)
+                .optionA("Object")
+                .optionB("Class")
+                .optionC("System")
+                .optionD("String")
+                .correctAnswer("A")
+                .explanation("Object class is the root of the class hierarchy in Java.")
+                .questionOrder(6)
+                .marks(1)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("Which of the following is not a valid access modifier in Java?")
+                .questionType(QuestionType.SINGLE_CORRECT)
+                .optionA("public")
+                .optionB("private")
+                .optionC("protected")
+                .optionD("friend")
+                .correctAnswer("D")
+                .explanation("friend is not a valid access modifier in Java. It's used in C++.")
+                .questionOrder(7)
+                .marks(1)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("What is the purpose of the 'final' keyword in Java?")
+                .questionType(QuestionType.SINGLE_CORRECT)
+                .optionA("To indicate that a variable is constant")
+                .optionB("To indicate that a method cannot be overridden")
+                .optionC("To indicate that a class cannot be inherited")
+                .optionD("All of the above")
+                .correctAnswer("D")
+                .explanation("The final keyword can be used with variables, methods, and classes to prevent modification.")
+                .questionOrder(8)
+                .marks(1)
+                .build());
+        
+        // Multiple Correct Questions
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("Which collection classes allow null values and null keys? (Select all that apply)")
+                .questionType(QuestionType.MULTIPLE_CORRECT)
+                .optionA("HashMap")
+                .optionB("HashTable")
+                .optionC("TreeMap")
+                .optionD("LinkedHashMap")
+                .correctAnswers("A,D")
+                .explanation("HashMap and LinkedHashMap allow null values and null keys. HashTable doesn't allow null keys or values, and TreeMap doesn't allow null keys.")
+                .questionOrder(9)
+                .marks(2)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("Which of the following are valid Java data types? (Select all that apply)")
+                .questionType(QuestionType.MULTIPLE_CORRECT)
+                .optionA("int")
+                .optionB("float")
+                .optionC("boolean")
+                .optionD("string")
+                .correctAnswers("A,B,C")
+                .explanation("int, float, and boolean are valid Java primitive types. string should be 'String' (capitalized) for the class type.")
+                .questionOrder(10)
+                .marks(2)
+                .build());
+        
+        // True/False Questions
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("Java supports multiple inheritance through classes.")
+                .questionType(QuestionType.TRUE_FALSE)
+                .optionA("True")
+                .optionB("False")
+                .correctAnswer("B")
+                .explanation("Java does not support multiple inheritance through classes to avoid the diamond problem. It supports it through interfaces.")
+                .questionOrder(11)
+                .marks(1)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("The main method in Java must be declared as public static void.")
+                .questionType(QuestionType.TRUE_FALSE)
+                .optionA("True")
+                .optionB("False")
+                .correctAnswer("A")
+                .explanation("The main method must be declared as public static void to be the entry point of a Java application.")
+                .questionOrder(12)
+                .marks(1)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("Java is a platform-independent language.")
+                .questionType(QuestionType.TRUE_FALSE)
+                .optionA("True")
+                .optionB("False")
+                .correctAnswer("A")
+                .explanation("Java is platform-independent due to its 'write once, run anywhere' capability through the JVM.")
+                .questionOrder(13)
+                .marks(1)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("All variables in Java must be initialized before use.")
+                .questionType(QuestionType.TRUE_FALSE)
+                .optionA("True")
+                .optionB("False")
+                .correctAnswer("B")
+                .explanation("Local variables must be initialized before use, but instance variables get default values.")
+                .questionOrder(14)
+                .marks(1)
+                .build());
+        
+        questions.add(Question.builder()
+                .quiz(quiz)
+                .questionText("Java automatically manages memory through garbage collection.")
+                .questionType(QuestionType.TRUE_FALSE)
+                .optionA("True")
+                .optionB("False")
+                .correctAnswer("A")
+                .explanation("Java has automatic garbage collection to manage memory and reclaim unused objects.")
+                .questionOrder(15)
+                .marks(1)
+                .build());
+        
+        questionRepository.saveAll(questions);
     }
 
     private void createGeographyQuiz(User adminUser) {

@@ -6,11 +6,6 @@ import { FiPlus, FiEdit, FiTrash2, FiUsers, FiBook, FiBarChart2 } from 'react-ic
 const AdminDashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newQuiz, setNewQuiz] = useState({
-    title: '',
-    description: ''
-  });
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -26,18 +21,6 @@ const AdminDashboard = () => {
     
     fetchQuizzes();
   }, []);
-
-  const handleCreateQuiz = async (e) => {
-    e.preventDefault();
-    try {
-      const quiz = await quizService.createQuiz(newQuiz);
-      setQuizzes([...quizzes, quiz]);
-      setNewQuiz({ title: '', description: '' });
-      setShowCreateForm(false);
-    } catch (error) {
-      console.error('Error creating quiz:', error);
-    }
-  };
 
   const handleDeleteQuiz = async (id) => {
     if (window.confirm('Are you sure you want to delete this quiz?')) {
@@ -104,62 +87,17 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Create Quiz Form */}
-      {showCreateForm && (
-        <div className="card p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Create New Quiz</h2>
-          <form onSubmit={handleCreateQuiz}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="form-label">Quiz Title</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Enter quiz title"
-                  value={newQuiz.title}
-                  onChange={(e) => setNewQuiz({...newQuiz, title: e.target.value})}
-                  required
-                />
-              </div>
-              <div>
-                <label className="form-label">Description</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Enter quiz description"
-                  value={newQuiz.description}
-                  onChange={(e) => setNewQuiz({...newQuiz, description: e.target.value})}
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <button type="submit" className="btn-primary">
-                Create Quiz
-              </button>
-              <button 
-                type="button" 
-                onClick={() => setShowCreateForm(false)}
-                className="btn-secondary"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
       {/* Quizzes Table */}
       <div className="card p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <h2 className="text-xl font-semibold text-gray-900">Manage Quizzes</h2>
-          <button 
-            onClick={() => setShowCreateForm(true)}
+          <Link 
+            to="/admin/create-quiz"
             className="btn-primary inline-flex items-center"
           >
             <FiPlus className="mr-2" />
             Create Quiz
-          </button>
+          </Link>
         </div>
 
         {quizzes.length > 0 ? (
@@ -195,11 +133,11 @@ const AdminDashboard = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500">
-                        {quiz.questions ? quiz.questions.length : 0} questions
+                        {quiz.questionCount || 0} questions
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {quiz.createdBy?.username || 'Unknown'}
+                      {quiz.createdByUsername || 'Admin'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link 
@@ -228,13 +166,13 @@ const AdminDashboard = () => {
               Get started by creating a new quiz.
             </p>
             <div className="mt-6">
-              <button
-                onClick={() => setShowCreateForm(true)}
+              <Link
+                to="/admin/create-quiz"
                 className="btn-primary inline-flex items-center"
               >
                 <FiPlus className="mr-2" />
                 Create Quiz
-              </button>
+              </Link>
             </div>
           </div>
         )}

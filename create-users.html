@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Users</title>
+</head>
+<body>
+    <h1>Creating Users...</h1>
+    <div id="result"></div>
+    
+    <script>
+        async function createUser(userData) {
+            try {
+                const response = await fetch('http://localhost:8081/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const result = await response.text();
+                document.getElementById('result').innerHTML += `<p>User created: ${JSON.stringify(userData)} - Result: ${result}</p>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML += `<p>Error creating user: ${error.message}</p>`;
+            }
+        }
+        
+        // Create admin user
+        createUser({
+            username: "admin",
+            email: "admin@example.com", 
+            password: "admin123",
+            role: "ADMIN"
+        });
+        
+        // Create regular user
+        setTimeout(() => {
+            createUser({
+                username: "user",
+                email: "user@example.com",
+                password: "user123", 
+                role: "USER"
+            });
+        }, 1000);
+    </script>
+</body>
+</html>

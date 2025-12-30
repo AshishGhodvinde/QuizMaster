@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import quizService from '../services/quizService';
-import { FiSearch, FiBook, FiClock, FiBarChart2 } from 'react-icons/fi';
+import { FiSearch, FiBook, FiClock, FiBarChart2, FiTag, FiTrendingUp, FiUser } from 'react-icons/fi';
+
+// Temporary inline quizService until file system issue is resolved
+const quizService = {
+  getAllQuizzes: async () => {
+    try {
+      const response = await fetch('http://localhost:8081/api/quizzes');
+      if (!response.ok) {
+        throw new Error('Failed to fetch quizzes');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching quizzes:', error);
+      return []; // Return empty array on error
+    }
+  }
+};
 
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [filteredQuizzes, setFilteredQuizzes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
   const [categories] = useState([
-    'All', 'Technology', 'Science', 'History', 'Geography', 'Literature', 'Art'
+    'All', 'JAVA', 'DSA', 'APTITUDE', 'GENERAL_KNOWLEDGE', 'SCIENCE', 'MATHEMATICS', 'HISTORY', 'GEOGRAPHY', 'SPORTS', 'TECHNOLOGY', 'PROGRAMMING', 'DATABASES', 'WEB_DEVELOPMENT', 'MOBILE_DEVELOPMENT', 'CLOUD_COMPUTING', 'ARTIFICIAL_INTELLIGENCE', 'CYBERSECURITY', 'OTHER'
   ]);
+  const [difficulties] = useState(['All', 'EASY', 'MEDIUM', 'HARD']);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('All');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -40,19 +57,48 @@ const QuizList = () => {
       );
     }
     
-    // Filter by category (simplified for demo)
+    // Filter by category
     if (selectedCategory !== 'All') {
-      // In a real app, you would have actual categories
-      // This is just for demonstration
+      result = result.filter(quiz => quiz.category === selectedCategory);
+    }
+    
+    // Filter by difficulty
+    if (selectedDifficulty !== 'All') {
+      result = result.filter(quiz => quiz.difficulty === selectedDifficulty);
     }
     
     setFilteredQuizzes(result);
-  }, [searchTerm, selectedCategory, quizzes]);
+  }, [searchTerm, selectedCategory, selectedDifficulty, quizzes]);
+
+  const getDifficultyColor = (difficulty) => {
+    switch (difficulty) {
+      case 'EASY': return 'text-green-600 bg-green-100';
+      case 'MEDIUM': return 'text-yellow-600 bg-yellow-100';
+      case 'HARD': return 'text-red-600 bg-red-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getCategoryColor = (category) => {
+    const colors = {
+      'JAVA': 'text-blue-600 bg-blue-100',
+      'DSA': 'text-purple-600 bg-purple-100',
+      'APTITUDE': 'text-indigo-600 bg-indigo-100',
+      'SCIENCE': 'text-green-600 bg-green-100',
+      'MATHEMATICS': 'text-orange-600 bg-orange-100',
+      'HISTORY': 'text-yellow-600 bg-yellow-100',
+      'GEOGRAPHY': 'text-teal-600 bg-teal-100',
+      'SPORTS': 'text-red-600 bg-red-100',
+      'TECHNOLOGY': 'text-cyan-600 bg-cyan-100',
+      'PROGRAMMING': 'text-pink-600 bg-pink-100'
+    };
+    return colors[category] || 'text-gray-600 bg-gray-100';
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }

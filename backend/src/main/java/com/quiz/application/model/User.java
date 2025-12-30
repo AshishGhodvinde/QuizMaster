@@ -2,35 +2,47 @@ package com.quiz.application.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.util.List;
 
 @Entity
-@Table(name = "users")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(unique = true)
+
+    @Column(nullable = false, unique = true)
     private String username;
-    
-    private String password;
-    
-    @Column(unique = true)
+
+    @Column(nullable = false, unique = true)
     private String email;
-    
-    private String role;
-    
-    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.EXTRA)
     @JsonIgnore
-    private List<Quiz> quizzes;
-    
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Quiz> createdQuizzes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.EXTRA)
     @JsonIgnore
     private List<QuizAttempt> quizAttempts;
 }

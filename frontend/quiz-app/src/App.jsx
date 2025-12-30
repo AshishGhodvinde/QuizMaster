@@ -9,6 +9,7 @@ import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
+import CreateQuiz from './pages/CreateQuiz';
 import { AuthProvider } from './contexts/AuthContext';
 import './App.css';
 
@@ -18,16 +19,19 @@ function App() {
       <Router>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/quizzes" element={<QuizList />} />
-            <Route path="/quizzes/:id" element={<QuizDetail />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Routes>
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/quizzes" element={<QuizList />} />
+              <Route path="/quizzes/:id" element={<QuizDetail />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/create-quiz" element={<CreateQuiz />} />
+            </Routes>
+          </main>
         </div>
       </Router>
     </AuthProvider>

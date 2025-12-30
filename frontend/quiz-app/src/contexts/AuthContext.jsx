@@ -21,18 +21,19 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const loadUser = async () => {
-      if (authState.token) {
+      const token = localStorage.getItem('token');
+      if (token) {
         try {
           const user = await authService.getCurrentUser();
           setAuthState({
-            ...authState,
+            token: token,
             isAuthenticated: true,
             loading: false,
             user
           });
         } catch (error) {
+          console.error('Failed to load user:', error);
           setAuthState({
-            ...authState,
             token: null,
             isAuthenticated: false,
             loading: false,
@@ -42,9 +43,10 @@ export const AuthProvider = ({ children }) => {
         }
       } else {
         setAuthState({
-          ...authState,
+          token: null,
           isAuthenticated: false,
-          loading: false
+          loading: false,
+          user: null
         });
       }
     };

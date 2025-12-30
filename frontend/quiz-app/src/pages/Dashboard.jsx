@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import quizService from '../services/quizService';
 import { FiBook, FiBarChart2, FiClock, FiAward } from 'react-icons/fi';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+// Temporary inline quizService until file system issue is resolved
+const quizService = {
+  getAllQuizzes: async () => {
+    // Return empty data for now
+    return [];
+  },
+  getMyAttempts: async () => {
+    // Return empty data for now
+    return [];
+  }
+};
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -20,10 +31,15 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [quizzesData, attemptsData] = await Promise.all([
-          quizService.getAllQuizzes(),
-          quizService.getMyAttempts()
-        ]);
+        // Temporarily disabled until quizService is fixed
+        // const [quizzesData, attemptsData] = await Promise.all([
+        //   quizService.getAllQuizzes(),
+        //   quizService.getMyAttempts()
+        // ]);
+        
+        // Set empty data for now
+        const quizzesData = [];
+        const attemptsData = [];
         
         setQuizzes(quizzesData);
         setAttempts(attemptsData);

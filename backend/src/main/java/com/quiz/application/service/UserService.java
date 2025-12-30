@@ -1,5 +1,6 @@
 package com.quiz.application.service;
 
+import com.quiz.application.model.Role;
 import com.quiz.application.model.User;
 import com.quiz.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class UserService {
                 .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(password))
-                .role(role)
+                .role(Role.valueOf(role.toUpperCase()))
                 .build();
         return userRepository.save(user);
     }
