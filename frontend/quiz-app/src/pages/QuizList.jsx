@@ -6,10 +6,24 @@ import { FiSearch, FiBook, FiClock, FiBarChart2, FiTag, FiTrendingUp, FiUser } f
 const quizService = {
   getAllQuizzes: async () => {
     try {
-      const response = await fetch('http://localhost:8081/api/quizzes');
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch('http://localhost:8081/api/quizzes', {
+        method: 'GET',
+        headers
+      });
+      
       if (!response.ok) {
         throw new Error('Failed to fetch quizzes');
       }
+      
       return await response.json();
     } catch (error) {
       console.error('Error fetching quizzes:', error);

@@ -1,7 +1,92 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import quizService from '../services/quizService';
+// import quizService from '../services/quizService';
 import { FiClock, FiBarChart2, FiCheck, FiX } from 'react-icons/fi';
+
+// Temporary inline quizService until file system issue is resolved
+const quizService = {
+  getQuizById: async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`http://localhost:8081/api/quizzes/${id}`, {
+        method: 'GET',
+        headers
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch quiz');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching quiz:', error);
+      throw error;
+    }
+  },
+  
+  getQuestionsForQuiz: async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`http://localhost:8081/api/quizzes/${id}/questions`, {
+        method: 'GET',
+        headers
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch questions');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+      throw error;
+    }
+  },
+  
+  submitQuiz: async (id, answers) => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`http://localhost:8081/api/quizzes/${id}/submit`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ answers })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit quiz');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error submitting quiz:', error);
+      throw error;
+    }
+  }
+};
 
 const QuizDetail = () => {
   const { id } = useParams();
@@ -73,17 +158,22 @@ const QuizDetail = () => {
 
   const handleSubmit = async () => {
     try {
-      // Convert selected answers to array format
-      const answersArray = Array(questions.length).fill('');
-      Object.keys(selectedAnswers).forEach(index => {
-        answersArray[index] = selectedAnswers[index];
+      // Convert selected answers to Map format with question IDs as keys
+      const answersMap = {};
+      questions.forEach((question, index) => {
+        if (selectedAnswers[index]) {
+          answersMap[question.id] = selectedAnswers[index];
+        }
       });
       
-      const resultData = await quizService.submitQuiz(id, answersArray);
+      console.log('Submitting answers:', answersMap);
+      const resultData = await quizService.submitQuiz(id, answersMap);
+      console.log('Quiz result:', resultData);
       setResult(resultData);
       setShowResults(true);
     } catch (error) {
       console.error('Error submitting quiz:', error);
+      alert('Error submitting quiz: ' + error.message);
     }
   };
 
@@ -114,26 +204,26 @@ const QuizDetail = () => {
           
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 mb-8">
             <div className="text-6xl font-bold text-blue-600 mb-2">
-              {Math.round(result.score / result.totalQuestions * 100)}%
+              {Math.round(result.obtainedMarks / result.totalMarks * 100)}%
             </div>
             <p className="text-gray-600 mb-6">
-              You scored {result.score} out of {result.totalQuestions} questions correctly
+              You scored {result.correctAnswers} out of {result.totalQuestions} questions correctly
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
               <div className="p-4 bg-white rounded-lg shadow">
-                <div className="text-2xl font-bold text-gray-900">{result.score}</div>
+                <div className="text-2xl font-bold text-gray-900">{result.correctAnswers}</div>
                 <div className="text-gray-600">Correct Answers</div>
               </div>
               <div className="p-4 bg-white rounded-lg shadow">
-                <div className="text-2xl font-bold text-gray-900">{result.totalQuestions - result.score}</div>
+                <div className="text-2xl font-bold text-gray-900">{result.incorrectAnswers}</div>
                 <div className="text-gray-600">Incorrect Answers</div>
               </div>
               <div className="p-4 bg-white rounded-lg shadow">
                 <div className="text-2xl font-bold text-gray-900">
-                  {formatTime(900 - timeLeft)}
+                  {Math.round(result.obtainedMarks * 10) / 10}
                 </div>
-                <div className="text-gray-600">Time Taken</div>
+                <div className="text-gray-600">Score</div>
               </div>
             </div>
           </div>

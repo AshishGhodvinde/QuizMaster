@@ -7,12 +7,56 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 // Temporary inline quizService until file system issue is resolved
 const quizService = {
   getAllQuizzes: async () => {
-    // Return empty data for now
-    return [];
+    try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch('http://localhost:8081/api/quizzes', {
+        method: 'GET',
+        headers
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch quizzes');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching quizzes:', error);
+      return [];
+    }
   },
   getMyAttempts: async () => {
-    // Return empty data for now
-    return [];
+    try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch('http://localhost:8081/api/quizzes/attempts', {
+        method: 'GET',
+        headers
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch attempts');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching attempts:', error);
+      return [];
+    }
   }
 };
 
@@ -31,15 +75,10 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Temporarily disabled until quizService is fixed
-        // const [quizzesData, attemptsData] = await Promise.all([
-        //   quizService.getAllQuizzes(),
-        //   quizService.getMyAttempts()
-        // ]);
-        
-        // Set empty data for now
-        const quizzesData = [];
-        const attemptsData = [];
+        const [quizzesData, attemptsData] = await Promise.all([
+          quizService.getAllQuizzes(),
+          quizService.getMyAttempts()
+        ]);
         
         setQuizzes(quizzesData);
         setAttempts(attemptsData);
@@ -48,7 +87,7 @@ const Dashboard = () => {
         const totalQuizzes = quizzesData.length;
         const completedQuizzes = attemptsData.length;
         const averageScore = attemptsData.length > 0 
-          ? Math.round(attemptsData.reduce((sum, attempt) => sum + (attempt.score / attempt.totalQuestions * 100), 0) / attemptsData.length)
+          ? Math.round(attemptsData.reduce((sum, attempt) => sum + (attempt.obtainedMarks / attempt.totalMarks * 100), 0) / attemptsData.length)
           : 0;
           
         setStats({
@@ -70,8 +109,8 @@ const Dashboard = () => {
 
   // Prepare chart data
   const chartData = attempts.slice(0, 5).map(attempt => ({
-    name: `Quiz ${attempt.quiz.id}`,
-    score: Math.round(attempt.score / attempt.totalQuestions * 100)
+    name: attempt.quiz?.title || `Quiz ${attempt.quiz?.id}`,
+    score: Math.round(attempt.obtainedMarks / attempt.totalMarks * 100)
   }));
 
   if (loading) {
@@ -169,17 +208,17 @@ const Dashboard = () => {
             {attempts.slice(0, 5).map((attempt) => (
               <div key={attempt.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="font-medium text-gray-900">Quiz #{attempt.quiz.id}</h3>
+                  <h3 className="font-medium text-gray-900">{attempt.quiz?.title || `Quiz ${attempt.quiz?.id}`}</h3>
                   <p className="text-sm text-gray-500">
-                    {new Date(attempt.dateTaken).toLocaleDateString()}
+                    {new Date(attempt.submittedAt).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="font-medium text-gray-900">
-                    {attempt.score}/{attempt.totalQuestions}
+                    {attempt.correctAnswers}/{attempt.totalQuestions}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {Math.round(attempt.score / attempt.totalQuestions * 100)}%
+                    {Math.round(attempt.obtainedMarks / attempt.totalMarks * 100)}%
                   </p>
                 </div>
               </div>

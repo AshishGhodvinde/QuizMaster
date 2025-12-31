@@ -1,7 +1,54 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiTrash2, FiSave, FiArrowLeft } from 'react-icons/fi';
-import quizService from '../services/quizService';
+// import quizService from '../services/quizService';
+
+// Temporary inline quizService until file system issue is resolved
+const quizService = {
+  createQuiz: async (quizData) => {
+    try {
+      const response = await fetch('http://localhost:8081/api/quizzes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(quizData)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to create quiz');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating quiz:', error);
+      throw error;
+    }
+  },
+  
+  addQuestionToQuiz: async (quizId, questionData) => {
+    try {
+      const response = await fetch(`http://localhost:8081/api/quizzes/${quizId}/questions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(questionData)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to add question');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error adding question:', error);
+      throw error;
+    }
+  }
+};
 
 const CreateQuiz = () => {
   const navigate = useNavigate();
