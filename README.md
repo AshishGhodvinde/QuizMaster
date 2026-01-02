@@ -1,238 +1,389 @@
-# QuizMaster - Online Quiz Application
+# 🎯 QuizMaster - Interactive Quiz Platform
 
-A fully functional online quiz application built with Spring Boot (backend) and React (frontend), using PostgreSQL for data persistence.
+<div align="center">
+  <img src="https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React">
+  <img src="https://img.shields.io/badge/Spring_Boot-3.1.5-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/PostgreSQL-15.0-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Maven-3.9.0-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white" alt="Maven">
+</div>
+
+<div align="center">
+  <h3>A modern, full-stack quiz application built with React and Spring Boot</h3>
+  <p>Features real-time quiz taking, admin dashboard, user management, and comprehensive analytics</p>
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [🚀 Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📸 Screenshots](#-screenshots)
+- [🏗️ Architecture](#️-architecture)
+- [⚙️ Installation](#️-installation)
+- [🎮 Usage](#-usage)
+- [👥 User Roles](#-user-roles)
+- [🔧 Configuration](#-configuration)
+- [📊 Database Schema](#-database-schema)
+- [🚀 Deployment](#-deployment)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+---
 
 ## 🚀 Features
 
-### User Features
-- **Authentication**: Secure login/registration with JWT tokens
-- **Quiz Browsing**: Browse available quizzes by category and difficulty
-- **Quiz Taking**: Interactive quiz interface with timer and navigation
-- **Results & Scoring**: Detailed results with score breakdown
-- **Quiz History**: Track all quiz attempts and performance statistics
-- **Dashboard**: Personal dashboard with performance analytics
+### 🎯 Core Functionality
+- **Interactive Quiz Taking** with real-time timer and progress tracking
+- **Multiple Question Types**: Single correct, multiple correct, true/false
+- **Instant Results & Feedback** with detailed score breakdown
+- **Quiz History & Analytics** for performance tracking
 
-### Admin Features
-- **Quiz Management**: Create, edit, and delete quizzes
-- **Question Management**: Add multiple question types (Single Correct, Multiple Correct, True/False)
-- **User Management**: Monitor user activity and quiz attempts
-- **Admin Dashboard**: Comprehensive admin interface with statistics
+### 👤 User Experience
+- **Role-Based Access Control** (Admin/User)
+- **JWT Authentication** for secure login
+- **Responsive Design** works on all devices
+- **Modern UI/UX** with Tailwind CSS
 
-## 🛠 Technology Stack
+### 🛠️ Admin Features
+- **Quiz Management** (Create, Edit, Delete)
+- **User Management** with role assignment
+- **Real-time Statistics** dashboard
+- **Question Bank Management**
+- **Quiz Configuration** (time limits, attempts, scoring)
 
-### Backend
-- **Spring Boot 3.2.0** - Java framework
-- **Spring Security** - Authentication and authorization
-- **Spring Data JPA** - Database operations
-- **PostgreSQL** - Primary database
-- **JWT** - Token-based authentication
-- **Flyway** - Database migrations
-- **Maven** - Build tool
+### 🔒 Security & Performance
+- **PostgreSQL Database** for reliable data storage
+- **Spring Security** with JWT tokens
+- **CORS Configuration** for secure API access
+- **Input Validation** and error handling
 
-### Frontend
-- **React 18** - UI framework
-- **Vite** - Build tool and dev server
-- **TailwindCSS** - CSS framework
-- **React Router** - Client-side routing
-- **Axios** - HTTP client
+---
 
-## 📋 Prerequisites
+## 🛠️ Tech Stack
 
-- Java 21 or higher
-- Node.js 18 or higher
-- PostgreSQL 14 or higher
-- Maven 3.6 or higher
-
-## 🗄 Database Setup
-
-1. **Install PostgreSQL** on your system
-2. **Create the database** by running the setup script:
-
-```bash
-psql -U postgres -f database-setup.sql
+### 🎨 Frontend
+```
+React 18.2.0          ⚛️  Modern UI framework
+Vite                  🚀  Fast build tool
+Tailwind CSS          🎨  Utility-first CSS framework
+React Router          🛣️  Client-side routing
+Axios                 📡  HTTP client
+Lucide React         🎭  Beautiful icons
 ```
 
-Or manually execute:
-```sql
-CREATE DATABASE quizmaster;
-CREATE USER quizmaster WITH PASSWORD 'quizmaster123';
-GRANT ALL PRIVILEGES ON DATABASE quizmaster TO quizmaster;
+### 🚀 Backend
+```
+Spring Boot 3.1.5     🍃  Java framework
+Spring Security       🔒  Authentication & authorization
+Spring Data JPA       📊  Database ORM
+PostgreSQL 15.0       🐘  Relational database
+JWT                   🎫  Token-based auth
+Maven                 📦  Build tool
+Lombok               ⚡  Java code generation
 ```
 
-## 🚀 Installation & Setup
+---
 
-### Backend Setup
+## 📸 Screenshots
 
-1. **Navigate to backend directory**:
-```bash
-cd backend
+> 📝 **Note**: Add your screenshots in the `docs/screenshots/` directory and update the paths below
+
+### 🏠 Home Page
+<div align="center">
+  <img src="docs/screenshots/home-page.png" alt="Home Page" width="800">
+  <p><em>Welcome screen with quiz overview and navigation</em></p>
+</div>
+
+### 🔐 User Authentication
+<div align="center">
+  <img src="docs/screenshots/login-page.png" alt="Login Page" width="400">
+  <img src="docs/screenshots/register-page.png" alt="Register Page" width="400">
+  <p><em>Secure login and registration interface</em></p>
+</div>
+
+### 📊 User Dashboard
+<div align="center">
+  <img src="docs/screenshots/user-dashboard.png" alt="User Dashboard" width="800">
+  <p><em>Personal dashboard with quiz history and statistics</em></p>
+</div>
+
+### 🎮 Quiz Taking Experience
+<div align="center">
+  <img src="docs/screenshots/quiz-taking.png" alt="Quiz Taking" width="800">
+  <p><em>Interactive quiz interface with timer and progress bar</em></p>
+</div>
+
+### 📈 Quiz Results
+<div align="center">
+  <img src="docs/screenshots/quiz-results.png" alt="Quiz Results" width="800">
+  <p><em>Detailed results with score breakdown and feedback</em></p>
+</div>
+
+### 🛠️ Admin Dashboard
+<div align="center">
+  <img src="docs/screenshots/admin-home.png" alt="Admin Home" width="800">
+  <p><em>Admin control panel with quick actions</em></p>
+</div>
+
+### 👥 User Management
+<div align="center">
+  <img src="docs/screenshots/manage-users.png" alt="Manage Users" width="800">
+  <p><em>Admin user management interface</em></p>
+</div>
+
+### 📝 Quiz Creation
+<div align="center">
+  <img src="docs/screenshots/create-quiz.png" alt="Create Quiz" width="800">
+  <p><em>Intuitive quiz creation interface</em></p>
+</div>
+
+---
+
+## 🏗️ Architecture
+
+### 📐 System Design
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   React App     │    │  Spring Boot    │    │   PostgreSQL    │
+│   (Frontend)    │◄──►│   (Backend)     │◄──►│   (Database)    │
+│   Port: 3000    │    │   Port: 8081    │    │   Port: 5432    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
-2. **Install dependencies**:
-```bash
-mvn clean install
-```
+### 🔄 Data Flow
+1. **Frontend** sends HTTP requests to **Backend API**
+2. **Backend** processes requests with **Spring Security**
+3. **Database** operations handled by **Spring Data JPA**
+4. **JWT tokens** manage authentication state
+5. **Real-time updates** via RESTful API calls
 
-3. **Run the application**:
-```bash
-mvn spring-boot:run
-```
+---
 
-The backend will start on `http://localhost:8081`
+## ⚙️ Installation
 
-### Frontend Setup
+### 📋 Prerequisites
+- **Node.js** (v18 or higher)
+- **Java** (v17 or higher)
+- **Maven** (v3.8 or higher)
+- **PostgreSQL** (v15 or higher)
 
-1. **Navigate to frontend directory**:
-```bash
-cd frontend/quiz-app
-```
+### 🗄️ Database Setup
 
-2. **Install dependencies**:
-```bash
-npm install
-```
+1. **Create PostgreSQL Database**
+   ```sql
+   -- Run in PostgreSQL
+   CREATE DATABASE quizmaster;
+   CREATE USER quizmaster WITH PASSWORD 'quizmaster123';
+   GRANT ALL PRIVILEGES ON DATABASE quizmaster TO quizmaster;
+   ```
 
-3. **Start development server**:
-```bash
-npm run dev
-```
+2. **Or use provided setup script**
+   ```bash
+   psql -U postgres -f database-setup.sql
+   ```
 
-The frontend will start on `http://localhost:3000`
+### 🚀 Backend Setup
 
-## 👤 Default Users
+1. **Navigate to backend directory**
+   ```bash
+   cd backend
+   ```
 
-The application automatically creates default users on startup:
+2. **Configure application properties**
+   ```properties
+   # backend/src/main/resources/application.properties
+   spring.datasource.url=jdbc:postgresql://localhost:5432/quizmaster
+   spring.datasource.username=postgres
+   spring.datasource.password=your_password
+   ```
 
-### Admin User
-- **Username**: `admin`
-- **Password**: `admin123`
+3. **Run the application**
+   ```bash
+   mvn spring-boot:run
+   ```
 
-### Regular User
-- **Username**: `user`
-- **Password**: `user123`
+   🌐 **Backend will be available at**: `http://localhost:8081`
+
+### 🎨 Frontend Setup
+
+1. **Navigate to frontend directory**
+   ```bash
+   cd frontend/quiz-app
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+   🌐 **Frontend will be available at**: `http://localhost:3000`
+
+---
 
 ## 🎮 Usage
 
-1. **Open the application** in your browser: `http://localhost:3000`
-2. **Register** a new account or use default credentials
-3. **Browse quizzes** and take them
-4. **View your results** and track your progress
-5. **Admin users** can create and manage quizzes
+### 👤 Default Credentials
 
-## 📊 Application Structure
+| Role    | Username | Password |
+|---------|----------|----------|
+| Admin   | admin    | admin123 |
+| User    | user     | user123  |
 
-```
-QuizApplication/
-├── backend/                    # Spring Boot backend
-│   ├── src/main/java/
-│   │   └── com/quiz/application/
-│   │       ├── controller/     # REST controllers
-│   │       ├── service/        # Business logic
-│   │       ├── repository/     # Data access layer
-│   │       ├── model/          # Entity classes
-│   │       ├── payload/        # DTOs
-│   │       ├── security/       # Security configuration
-│   │       └── config/         # Application configuration
-│   ├── src/main/resources/
-│   │   └── application.properties
-│   └── pom.xml
-├── frontend/
-│   └── quiz-app/               # React frontend
-│       ├── src/
-│       │   ├── components/     # Reusable components
-│       │   ├── pages/          # Page components
-│       │   ├── contexts/       # React contexts
-│       │   ├── services/       # API services
-│       │   └── App.jsx
-│       ├── package.json
-│       └── vite.config.js
-└── database-setup.sql          # Database setup script
-```
+### 🎯 Quick Start Guide
+
+1. **Open** `http://localhost:3000` in your browser
+2. **Login** with admin credentials (`admin/admin123`)
+3. **Explore** the admin dashboard features
+4. **Create** your first quiz with multiple questions
+5. **Switch** to user account to test quiz taking
+6. **View** results and analytics
+
+### 📱 User Journey
+
+1. **Registration/Login** → Secure authentication
+2. **Browse Quizzes** → View available quizzes
+3. **Take Quiz** → Interactive quiz experience
+4. **View Results** → Instant feedback and scores
+5. **Track Progress** → Personal dashboard
+
+---
+
+## 👥 User Roles
+
+### 🔑 Admin Capabilities
+- ✅ Create, edit, and delete quizzes
+- ✅ Manage user accounts and roles
+- ✅ View platform statistics and analytics
+- ✅ Configure quiz settings and parameters
+- ✅ Monitor quiz attempts and performance
+
+### 🎮 User Capabilities
+- ✅ Take available quizzes
+- ✅ View personal quiz history
+- ✅ Track performance statistics
+- ✅ Manage profile information
+- ✅ Attempt quizzes multiple times (if allowed)
+
+---
 
 ## 🔧 Configuration
 
-### Database Configuration
-Database settings are configured in `backend/src/main/resources/application.properties`:
-
+### 🛡️ Security Settings
 ```properties
+# JWT Configuration
+jwt.secret=your-secret-key-here
+jwt.expiration=86400000
+
+# CORS Configuration
+spring.web.cors.allowed-origins=http://localhost:3000
+```
+
+### 📊 Database Configuration
+```properties
+# PostgreSQL Settings
 spring.datasource.url=jdbc:postgresql://localhost:5432/quizmaster
-spring.datasource.username=quizmaster
-spring.datasource.password=quizmaster123
+spring.datasource.username=postgres
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
 ```
 
-### JWT Configuration
-JWT settings can be configured in the same file:
+### ⏱️ Quiz Settings
 ```properties
-jwt.secret=your-secret-key
-jwt.expiration=86400000  # 24 hours
+# Default Quiz Configuration
+quiz.default.time-limit=15
+quiz.default.max-attempts=3
+quiz.default.passing-percentage=60
 ```
 
-## 🧪 Testing
+---
 
-### Backend Tests
-```bash
-cd backend
-mvn test
+## 📊 Database Schema
+
+### 🗂️ Core Tables
+```sql
+users          ── User accounts and authentication
+quizzes        ── Quiz definitions and settings
+questions      ── Individual quiz questions
+quiz_attempts  ── User quiz attempts and results
 ```
 
-### Frontend Tests
-```bash
-cd frontend/quiz-app
-npm test
-```
+### 🔗 Relationships
+- `users` ←→ `quizzes` (One-to-Many: Created By)
+- `quizzes` ←→ `questions` (One-to-Many)
+- `users` ←→ `quiz_attempts` (One-to-Many)
+- `quizzes` ←→ `quiz_attempts` (One-to-Many)
+
+---
 
 ## 🚀 Deployment
 
-### Backend Deployment
-1. Build the JAR file:
+### 🐳 Docker Deployment (Optional)
 ```bash
-mvn clean package
+# Build and run with Docker Compose
+docker-compose up -d
 ```
 
-2. Run the JAR file:
-```bash
-java -jar target/quiz-application-0.0.1-SNAPSHOT.jar
-```
+### 🌐 Production Considerations
+- **Environment Variables** for sensitive data
+- **HTTPS Configuration** for secure connections
+- **Database Backups** for data safety
+- **Load Balancing** for scalability
+- **Monitoring & Logging** for maintenance
 
-### Frontend Deployment
-1. Build for production:
-```bash
-npm run build
-```
-
-2. Deploy the `dist` folder to your web server
+---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+1. **Fork** the repository
+2. **Create** a feature branch
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Commit** your changes
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+4. **Push** to the branch
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. **Open** a Pull Request
 
-## 📝 License
+---
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📄 License
 
-## 🐛 Troubleshooting
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Common Issues
+---
 
-1. **Database Connection Error**
-   - Ensure PostgreSQL is running
-   - Check database credentials in application.properties
-   - Verify database was created using setup script
+## 🙏 Acknowledgments
 
-2. **Port Conflicts**
-   - Backend uses port 8081
-   - Frontend uses port 3000
-   - Change ports if conflicts occur
+- **React Team** for the amazing frontend framework
+- **Spring Boot Team** for the robust backend framework
+- **PostgreSQL Team** for the reliable database system
+- **Tailwind CSS** for the utility-first CSS framework
 
-3. **Build Errors**
-   - Ensure Java 21+ is installed
-   - Verify Maven is properly configured
-   - Check Node.js version (18+)
+---
 
-## 📞 Support
+## 📞 Contact
 
-For support and questions, please open an issue on the GitHub repository.
+<div align="center">
+  <p>📧 For internship project review and inquiries</p>
+  <p>🚀 Built with passion for interactive learning</p>
+</div>
+
+---
+
+<div align="center">
+  <img src="https://img.shields.io/github/stars/AshishGhodvinde/QuizMaster?style=social" alt="GitHub Stars">
+  <img src="https://img.shields.io/github/forks/AshishGhodvinde/QuizMaster?style=social" alt="GitHub Forks">
+  <img src="https://img.shields.io/github/issues/AshishGhodvinde/QuizMaster" alt="GitHub Issues">
+  <img src="https://img.shields.io/github/license/AshishGhodvinde/QuizMaster" alt="License">
+</div>
