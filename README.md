@@ -69,13 +69,17 @@
 
 ## 📸 Screenshots
 
-> 📝 **Note**: Add screenshots in the `screenshots/` directory
-
 ### 🏠 Home & Login
 <div align="center">
   <img src="screenshots/home-page.png" alt="Home Page" width="400">
   <img src="screenshots/login-page.png" alt="Login Page" width="400">
   <p><em>Welcome screen and secure login interface</em></p>
+</div>
+
+### 📊 User Dashboard
+<div align="center">
+  <img src="screenshots/user-dashboard.png" alt="User Dashboard" width="800">
+  <p><em>Personal dashboard with quiz history and statistics</em></p>
 </div>
 
 ### 🎮 Quiz Experience
@@ -87,8 +91,15 @@
 
 ### 🛠️ Admin Dashboard
 <div align="center">
-  <img src="screenshots/admin-dashboard.png" alt="Admin Dashboard" width="800">
-  <p><em>Admin control panel with statistics and management</em></p>
+  <img src="screenshots/admin-home.png" alt="Admin Home" width="400">
+  <img src="screenshots/manage-users.png" alt="Manage Users" width="400">
+  <p><em>Admin control panel and user management</em></p>
+</div>
+
+### 📝 Quiz Creation
+<div align="center">
+  <img src="screenshots/create-quiz.png" alt="Create Quiz" width="800">
+  <p><em>Intuitive quiz creation interface</em></p>
 </div>
 
 ---
