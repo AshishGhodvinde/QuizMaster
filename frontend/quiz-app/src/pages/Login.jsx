@@ -26,11 +26,17 @@ const Login = () => {
     setError('');
 
     try {
-      await login({
+      const response = await login({
         username,
         password
       });
-      navigate('/dashboard');
+      
+      // Check if user is admin and redirect accordingly
+      if (response.data.user.role === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError('Invalid username or password');
     } finally {

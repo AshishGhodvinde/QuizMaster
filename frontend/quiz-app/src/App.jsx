@@ -10,6 +10,7 @@ import QuizDetail from './pages/QuizDetail';
 import Profile from './pages/Profile';
 import AdminHome from './pages/AdminHome';
 import AdminDashboard from './pages/AdminDashboard';
+import ManageUsers from './pages/ManageUsers';
 import CreateQuiz from './pages/CreateQuiz';
 import { AuthProvider } from './contexts/AuthContext';
 import './App.css';
@@ -31,6 +32,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<AdminHome />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/users" element={<ManageUsers />} />
               <Route path="/admin/create-quiz" element={<CreateQuiz />} />
             </Routes>
           </main>

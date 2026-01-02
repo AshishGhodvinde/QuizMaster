@@ -28,7 +28,7 @@ const AdminHome = () => {
         </Link>
 
         <Link 
-          to="/admin"
+          to="/admin/dashboard"
           className="card p-6 hover:shadow-lg transition-shadow duration-200"
         >
           <div className="flex items-center">
@@ -43,7 +43,7 @@ const AdminHome = () => {
         </Link>
 
         <Link 
-          to="/admin"
+          to="/admin/dashboard"
           className="card p-6 hover:shadow-lg transition-shadow duration-200"
         >
           <div className="flex items-center">
@@ -58,7 +58,7 @@ const AdminHome = () => {
         </Link>
 
         <Link 
-          to="/admin"
+          to="/admin/users"
           className="card p-6 hover:shadow-lg transition-shadow duration-200"
         >
           <div className="flex items-center">

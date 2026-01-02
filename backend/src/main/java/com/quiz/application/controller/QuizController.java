@@ -1,13 +1,7 @@
 package com.quiz.application.controller;
 
-import com.quiz.application.model.Question;
-import com.quiz.application.model.Quiz;
-import com.quiz.application.model.QuizAttempt;
-import com.quiz.application.model.User;
-import com.quiz.application.payload.QuestionRequest;
-import com.quiz.application.payload.QuizDto;
-import com.quiz.application.payload.QuizRequest;
-import com.quiz.application.payload.QuizSubmissionRequest;
+import com.quiz.application.model.*;
+import com.quiz.application.payload.*;
 import com.quiz.application.service.QuizService;
 import com.quiz.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,7 +29,10 @@ public class QuizController {
     public ResponseEntity<?> getAllQuizzes() {
         try {
             List<Quiz> quizzes = quizService.getAllQuizzes();
-            return ResponseEntity.ok(quizzes);
+            List<QuizDto> quizDtos = quizzes.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(quizDtos);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching quizzes: " + e.getMessage());
         }
@@ -95,6 +92,13 @@ public class QuizController {
                 
         Quiz createdQuiz = quizService.createQuiz(quiz);
         return convertToDto(createdQuiz);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteQuiz(@PathVariable Long id) {
+        quizService.deleteQuiz(id);
+        return ResponseEntity.noContent().build();
     }
 
     // Submit quiz answers and calculate score
