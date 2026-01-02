@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
 import Profile from './pages/Profile';
+import AdminHome from './pages/AdminHome';
 import AdminDashboard from './pages/AdminDashboard';
 import CreateQuiz from './pages/CreateQuiz';
 import { AuthProvider } from './contexts/AuthContext';
@@ -28,7 +29,8 @@ function App() {
               <Route path="/quizzes" element={<QuizList />} />
               <Route path="/quizzes/:id" element={<QuizDetail />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin" element={<AdminHome />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/create-quiz" element={<CreateQuiz />} />
             </Routes>
           </main>

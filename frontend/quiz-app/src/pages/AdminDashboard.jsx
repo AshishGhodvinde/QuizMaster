@@ -5,21 +5,30 @@ import { FiPlus, FiEdit, FiTrash2, FiUsers, FiBook, FiBarChart2 } from 'react-ic
 
 const AdminDashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalQuizzes: 0,
+    totalAttempts: 0
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchQuizzes = async () => {
+    const fetchData = async () => {
       try {
-        const data = await quizService.getAllQuizzes();
-        setQuizzes(data);
+        const [quizzesData, statsData] = await Promise.all([
+          quizService.getAllQuizzes(),
+          fetch('/api/users/stats').then(res => res.json())
+        ]);
+        setQuizzes(quizzesData);
+        setStats(statsData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching quizzes:', error);
+        console.error('Error fetching data:', error);
         setLoading(false);
       }
     };
     
-    fetchQuizzes();
+    fetchData();
   }, []);
 
   const handleDeleteQuiz = async (id) => {
@@ -57,7 +66,7 @@ const AdminDashboard = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Users</p>
-              <p className="text-2xl font-semibold text-gray-900">1,248</p>
+              <p className="text-2xl font-semibold text-gray-900">{stats.totalUsers}</p>
             </div>
           </div>
         </div>
@@ -81,7 +90,7 @@ const AdminDashboard = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Attempts</p>
-              <p className="text-2xl font-semibold text-gray-900">3,421</p>
+              <p className="text-2xl font-semibold text-gray-900">{stats.totalAttempts}</p>
             </div>
           </div>
         </div>

@@ -110,6 +110,8 @@ const QuizDetail = () => {
         
         setQuiz(quizData);
         setQuestions(questionsData);
+        // Set timer based on quiz time limit (convert minutes to seconds)
+        setTimeLeft((quizData.timeLimitMinutes || 15) * 60);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching quiz data:', error);

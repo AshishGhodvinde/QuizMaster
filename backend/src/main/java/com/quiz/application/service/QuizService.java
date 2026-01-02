@@ -137,6 +137,10 @@ public class QuizService {
         return quizAttemptRepository.findByQuiz(quiz);
     }
 
+    public List<QuizAttempt> getAllAttempts() {
+        return quizAttemptRepository.findAll();
+    }
+
     public Optional<Question> getQuestionById(Long id) {
         return questionRepository.findById(id);
     }
