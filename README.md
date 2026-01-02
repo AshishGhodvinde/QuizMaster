@@ -1,339 +1,238 @@
-# Online Quiz Application
+# QuizMaster - Online Quiz Application
 
-A modern, scalable online quiz application built with Spring Boot, React, and PostgreSQL. This application allows users to take quizzes on various topics, track their progress, and compete on leaderboards.
+A fully functional online quiz application built with Spring Boot (backend) and React (frontend), using PostgreSQL for data persistence.
 
-![Quiz Application Screenshot](screenshots/dashboard.png)
-
-## Features
+## 🚀 Features
 
 ### User Features
-- User authentication (registration and login)
-- Quiz browsing and taking
-- Immediate feedback on answers
-- Score tracking and history
-- Performance analytics and charts
-- Responsive and modern UI
+- **Authentication**: Secure login/registration with JWT tokens
+- **Quiz Browsing**: Browse available quizzes by category and difficulty
+- **Quiz Taking**: Interactive quiz interface with timer and navigation
+- **Results & Scoring**: Detailed results with score breakdown
+- **Quiz History**: Track all quiz attempts and performance statistics
+- **Dashboard**: Personal dashboard with performance analytics
 
 ### Admin Features
-- Create, edit, and delete quizzes
-- Manage quiz questions
-- View user attempts and statistics
-- User management
+- **Quiz Management**: Create, edit, and delete quizzes
+- **Question Management**: Add multiple question types (Single Correct, Multiple Correct, True/False)
+- **User Management**: Monitor user activity and quiz attempts
+- **Admin Dashboard**: Comprehensive admin interface with statistics
 
-### Technical Features
-- JWT-based authentication
-- RESTful API
-- Database persistence with PostgreSQL
-- Docker containerization
-- Responsive design with Tailwind CSS
-- Role-based access control
-
-## Technology Stack
+## 🛠 Technology Stack
 
 ### Backend
-- **Spring Boot** - Java framework for building RESTful APIs
+- **Spring Boot 3.2.0** - Java framework
 - **Spring Security** - Authentication and authorization
-- **Spring Data JPA** - Database access
-- **PostgreSQL** - Relational database
+- **Spring Data JPA** - Database operations
+- **PostgreSQL** - Primary database
 - **JWT** - Token-based authentication
-- **Lombok** - Boilerplate code reduction
-- **Maven** - Dependency management
+- **Flyway** - Database migrations
+- **Maven** - Build tool
 
 ### Frontend
-- **React** - JavaScript library for UI
+- **React 18** - UI framework
+- **Vite** - Build tool and dev server
+- **TailwindCSS** - CSS framework
 - **React Router** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS framework
 - **Axios** - HTTP client
-- **Recharts** - Data visualization
-- **React Icons** - Icon library
-- **Vite** - Build tool
 
-### DevOps
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
-- **Nginx** - Reverse proxy and web server
+## 📋 Prerequisites
 
-## Prerequisites
+- Java 21 or higher
+- Node.js 18 or higher
+- PostgreSQL 14 or higher
+- Maven 3.6 or higher
 
-- Java 17+
-- Node.js 18+
-- Docker and Docker Compose (for containerized deployment)
-- PostgreSQL 13+ (if running locally without Docker)
-- Maven 3.8+ (for backend build)
-- npm 8+ (for frontend build)
+## 🗄 Database Setup
 
-## Installation
+1. **Install PostgreSQL** on your system
+2. **Create the database** by running the setup script:
 
-### Option 1: Using Docker (Recommended)
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd QuizApplication
-   ```
-
-2. (Optional) Update environment variables in `docker-compose.yml`:
-   ```yaml
-   environment:
-     POSTGRES_DB: quizdb
-     POSTGRES_USER: quizuser
-     POSTGRES_PASSWORD: quizpass
-   ```
-
-3. Build and run the application:
-   ```bash
-   docker-compose up --build
-   ```
-
-4. Access the application:
-   - Frontend: http://localhost
-   - Backend API: http://localhost:8080
-
-5. Default accounts will be created automatically:
-   - Admin: username `admin`, password `admin123`
-   - User: username `user`, password `user123`
-
-### Option 2: Manual Installation
-
-#### Backend Setup
-
-1. Set up PostgreSQL database:
-   - Install PostgreSQL
-   - Create database: `CREATE DATABASE quizdb;`
-   - Create user: `CREATE USER quizuser WITH PASSWORD 'quizpass';`
-   - Grant privileges: `GRANT ALL PRIVILEGES ON DATABASE quizdb TO quizuser;`
-
-2. Update database configuration in `backend/src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/quizdb
-   spring.datasource.username=quizuser
-   spring.datasource.password=quizpass
-   ```
-
-3. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-
-4. Build the application:
-   ```bash
-   mvn clean package
-   ```
-
-5. Run the application:
-   ```bash
-   java -jar target/quiz-application-0.0.1-SNAPSHOT.jar
-   ```
-
-#### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend/quiz-app
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. (Optional) Update API base URL in `src/services/authService.js` and `src/services/quizService.js`:
-   ```javascript
-   const API_BASE_URL = 'http://localhost:8080/api';
-   ```
-
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-5. Build for production:
-   ```bash
-   npm run build
-   ```
-
-## Default Accounts
-
-After the first run, the application will create default accounts:
-
-- **Admin User**
-  - Username: `admin`
-  - Password: `admin123`
-  - Permissions: Full access to all features including quiz management
-
-- **Regular User**
-  - Username: `user`
-  - Password: `user123`
-  - Permissions: Can take quizzes, view results, and manage profile
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/signin` - User login
-
-### Users
-- `GET /api/users` - Get all users (Admin only)
-- `GET /api/users/me` - Get current authenticated user
-- `GET /api/users/{username}` - Get user by username
-
-### Quizzes
-- `GET /api/quizzes` - Get all quizzes
-- `GET /api/quizzes/{id}` - Get quiz by ID
-- `GET /api/quizzes/{id}/questions` - Get questions for a quiz
-- `POST /api/quizzes` - Create a new quiz (Admin only)
-- `PUT /api/quizzes/{id}` - Update a quiz (Admin only)
-- `DELETE /api/quizzes/{id}` - Delete a quiz (Admin only)
-- `POST /api/quizzes/{id}/submit` - Submit quiz answers
-- `GET /api/quizzes/attempts` - Get quiz attempts for current user
-- `GET /api/quizzes/{id}/attempts` - Get quiz attempts for a specific quiz (Admin only)
-- `POST /api/quizzes/{id}/questions` - Add a question to a quiz (Admin only)
-- `PUT /api/quizzes/questions/{questionId}` - Update a question (Admin only)
-- `DELETE /api/quizzes/questions/{questionId}` - Delete a question (Admin only)
-
-### Request/Response Examples
-
-**User Registration:**
-```json
-POST /api/auth/signup
-{
-  "username": "newuser",
-  "email": "user@example.com",
-  "password": "password123"
-}
+```bash
+psql -U postgres -f database-setup.sql
 ```
 
-**Quiz Submission:**
-```json
-POST /api/quizzes/1/submit
-{
-  "answers": ["A", "B", "C"]
-}
+Or manually execute:
+```sql
+CREATE DATABASE quizmaster;
+CREATE USER quizmaster WITH PASSWORD 'quizmaster123';
+GRANT ALL PRIVILEGES ON DATABASE quizmaster TO quizmaster;
 ```
 
-## Project Structure
+## 🚀 Installation & Setup
+
+### Backend Setup
+
+1. **Navigate to backend directory**:
+```bash
+cd backend
+```
+
+2. **Install dependencies**:
+```bash
+mvn clean install
+```
+
+3. **Run the application**:
+```bash
+mvn spring-boot:run
+```
+
+The backend will start on `http://localhost:8081`
+
+### Frontend Setup
+
+1. **Navigate to frontend directory**:
+```bash
+cd frontend/quiz-app
+```
+
+2. **Install dependencies**:
+```bash
+npm install
+```
+
+3. **Start development server**:
+```bash
+npm run dev
+```
+
+The frontend will start on `http://localhost:3000`
+
+## 👤 Default Users
+
+The application automatically creates default users on startup:
+
+### Admin User
+- **Username**: `admin`
+- **Password**: `admin123`
+
+### Regular User
+- **Username**: `user`
+- **Password**: `user123`
+
+## 🎮 Usage
+
+1. **Open the application** in your browser: `http://localhost:3000`
+2. **Register** a new account or use default credentials
+3. **Browse quizzes** and take them
+4. **View your results** and track your progress
+5. **Admin users** can create and manage quizzes
+
+## 📊 Application Structure
 
 ```
 QuizApplication/
 ├── backend/                    # Spring Boot backend
-│   ├── src/main/java/         # Java source code
-│   │   ├── com.quiz.application
-│   │   │   ├── config/        # Configuration classes
-│   │   │   ├── controller/    # REST controllers
-│   │   │   ├── exception/     # Exception handlers
-│   │   │   ├── model/         # Entity classes
-│   │   │   ├── payload/       # DTOs
-│   │   │   ├── repository/    # Spring Data repositories
-│   │   │   ├── security/      # Security configuration
-│   │   │   └── service/       # Business logic services
-│   ├── src/main/resources/    # Configuration files
-│   │   └── db/migration/      # Database migrations
-│   ├── Dockerfile             # Backend Docker configuration
-│   └── pom.xml                # Maven dependencies
-├── frontend/                  # React frontend
-│   └── quiz-app/              # React application
-│       ├── src/               # React source code
-│       │   ├── components/    # Reusable UI components
-│       │   ├── contexts/      # React context providers
-│       │   ├── hooks/         # Custom hooks
-│       │   ├── pages/         # Page components
-│       │   ├── services/      # API service clients
-│       │   └── utils/         # Utility functions
-│       ├── Dockerfile         # Frontend Docker configuration
-│       ├── nginx.conf         # Nginx configuration
-│       └── vite.config.js     # Vite build configuration
-├── .github/workflows/         # CI/CD workflows
-├── docker-compose.yml         # Multi-container orchestration
-└── README.md                 # This file
+│   ├── src/main/java/
+│   │   └── com/quiz/application/
+│   │       ├── controller/     # REST controllers
+│   │       ├── service/        # Business logic
+│   │       ├── repository/     # Data access layer
+│   │       ├── model/          # Entity classes
+│   │       ├── payload/        # DTOs
+│   │       ├── security/       # Security configuration
+│   │       └── config/         # Application configuration
+│   ├── src/main/resources/
+│   │   └── application.properties
+│   └── pom.xml
+├── frontend/
+│   └── quiz-app/               # React frontend
+│       ├── src/
+│       │   ├── components/     # Reusable components
+│       │   ├── pages/          # Page components
+│       │   ├── contexts/       # React contexts
+│       │   ├── services/       # API services
+│       │   └── App.jsx
+│       ├── package.json
+│       └── vite.config.js
+└── database-setup.sql          # Database setup script
 ```
 
-## Deployment
+## 🔧 Configuration
 
-### Production Deployment
+### Database Configuration
+Database settings are configured in `backend/src/main/resources/application.properties`:
 
-To deploy to production, you should:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/quizmaster
+spring.datasource.username=quizmaster
+spring.datasource.password=quizmaster123
+```
 
-1. Update the database credentials in `application.properties` or use environment variables
-2. Configure HTTPS for security
-3. Set up a reverse proxy (Nginx) for the backend
-4. Use environment variables for sensitive configuration
-5. Set up CI/CD pipeline for automated deployment
+### JWT Configuration
+JWT settings can be configured in the same file:
+```properties
+jwt.secret=your-secret-key
+jwt.expiration=86400000  # 24 hours
+```
 
-### Environment Variables
+## 🧪 Testing
 
-**Backend (.env file or system environment variables):**
+### Backend Tests
 ```bash
-SPRING_DATASOURCE_URL=jdbc:postgresql://db-host:5432/quizdb
-SPRING_DATASOURCE_USERNAME=quizuser
-SPRING_DATASOURCE_PASSWORD=securepassword
-JWT_SECRET=your-super-secret-jwt-key
-JWT_EXPIRATION=86400000
+cd backend
+mvn test
 ```
 
-**Frontend (.env file):**
+### Frontend Tests
 ```bash
-VITE_API_BASE_URL=https://your-domain.com/api
+cd frontend/quiz-app
+npm test
 ```
 
-### Docker Deployment
+## 🚀 Deployment
 
-1. Build images:
-   ```bash
-   docker build -t quiz-backend ./backend
-   docker build -t quiz-frontend ./frontend/quiz-app
-   ```
+### Backend Deployment
+1. Build the JAR file:
+```bash
+mvn clean package
+```
 
-2. Run containers:
-   ```bash
-   docker run -d --name quiz-db -e POSTGRES_DB=quizdb -e POSTGRES_USER=quizuser -e POSTGRES_PASSWORD=quizpass postgres:15
-   docker run -d --name quiz-backend --link quiz-db:db -p 8080:8080 quiz-backend
-   docker run -d --name quiz-frontend --link quiz-backend:backend -p 80:80 quiz-frontend
-   ```
+2. Run the JAR file:
+```bash
+java -jar target/quiz-application-0.0.1-SNAPSHOT.jar
+```
 
-### Cloud Deployment Options
+### Frontend Deployment
+1. Build for production:
+```bash
+npm run build
+```
 
-#### Heroku
-1. Create apps for backend and frontend
-2. Set environment variables in Heroku dashboard
-3. Deploy using Heroku CLI or GitHub integration
+2. Deploy the `dist` folder to your web server
 
-#### AWS ECS
-1. Create ECS cluster
-2. Define task definitions for backend and frontend
-3. Set up load balancers and security groups
-4. Deploy services with Fargate
-
-#### Google Cloud Run
-1. Build and push Docker images to Container Registry
-2. Deploy services to Cloud Run
-3. Configure Cloud SQL for PostgreSQL
-4. Set up Cloud Load Balancing
-
-#### Azure Container Instances
-1. Create container groups
-2. Configure networking and DNS
-3. Set up Azure Database for PostgreSQL
-4. Deploy containers with environment variables
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a pull request
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-### Development Guidelines
+## 📝 License
 
-- Follow the existing code style
-- Write unit tests for new functionality
-- Update documentation when making changes
-- Ensure all tests pass before submitting a pull request
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## License
+## 🐛 Troubleshooting
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Common Issues
 
-## Support
+1. **Database Connection Error**
+   - Ensure PostgreSQL is running
+   - Check database credentials in application.properties
+   - Verify database was created using setup script
 
-If you encounter any issues or have questions, please [open an issue](../../issues) on GitHub.
+2. **Port Conflicts**
+   - Backend uses port 8081
+   - Frontend uses port 3000
+   - Change ports if conflicts occur
+
+3. **Build Errors**
+   - Ensure Java 21+ is installed
+   - Verify Maven is properly configured
+   - Check Node.js version (18+)
+
+## 📞 Support
+
+For support and questions, please open an issue on the GitHub repository.
