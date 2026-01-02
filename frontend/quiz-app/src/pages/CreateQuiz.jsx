@@ -235,7 +235,7 @@ const CreateQuiz = () => {
       
       setSuccess('Quiz created successfully!');
       setTimeout(() => {
-        navigate('/admin/dashboard');
+        navigate('/admin');
       }, 2000);
     } catch (err) {
       setError('Failed to create quiz. Please try again.');

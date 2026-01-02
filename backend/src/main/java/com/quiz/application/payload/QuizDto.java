@@ -11,4 +11,5 @@ public class QuizDto {
     private String title;
     private String description;
     private String createdByUsername;
+    private Integer questionCount;
 }

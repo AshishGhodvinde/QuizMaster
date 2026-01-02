@@ -57,6 +57,16 @@ public class QuizController {
         return quizService.getQuestionsForQuiz(quiz);
     }
 
+    // Get user's quiz attempts
+    @GetMapping("/attempts")
+    public List<QuizAttempt> getMyAttempts() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User currentUser = userService.getUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return quizService.getAttemptsForUser(currentUser);
+    }
+
     // Create a new quiz (admin only)
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -133,6 +143,9 @@ public class QuizController {
         if (quiz.getCreatedBy() != null) {
             dto.setCreatedByUsername(quiz.getCreatedBy().getUsername());
         }
+        // Get question count
+        int questionCount = quizService.getQuestionCountByQuizId(quiz.getId());
+        dto.setQuestionCount(questionCount);
         return dto;
     }
 }

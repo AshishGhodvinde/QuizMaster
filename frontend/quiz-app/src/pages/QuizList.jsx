@@ -183,7 +183,7 @@ const QuizList = () => {
                   </div>
                   <div className="flex items-center">
                     <FiBarChart2 className="mr-1" />
-                    <span>10 questions</span>
+                    <span>{quiz.questionCount || 0} questions</span>
                   </div>
                 </div>
                 
