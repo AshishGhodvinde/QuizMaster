@@ -5,12 +5,14 @@ import com.quiz.application.model.QuizAttempt;
 import com.quiz.application.service.UserService;
 import com.quiz.application.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -56,6 +58,19 @@ public class UserController {
         );
     }
     
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        // Prevent deletion of admin user
+        Optional<User> user = userService.getUserById(id);
+        if (user.isPresent() && "admin".equals(user.get().getUsername())) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
     // Inner class for stats response
     public static class AdminStats {
         private int totalUsers;

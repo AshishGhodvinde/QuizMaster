@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiUsers, FiMail, FiShield, FiCalendar } from 'react-icons/fi';
+import { FiUsers, FiMail, FiShield, FiCalendar, FiTrash2 } from 'react-icons/fi';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -29,6 +29,31 @@ const ManageUsers = () => {
 
     fetchUsers();
   }, []);
+
+  const handleDeleteUser = async (userId, username) => {
+    if (window.confirm(`Are you sure you want to delete user "${username}"? This action cannot be undone.`)) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/users/${userId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          setUsers(users.filter(user => user.id !== userId));
+          alert('User deleted successfully!');
+        } else {
+          alert('Failed to delete user. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert('Error deleting user. Please try again.');
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -67,6 +92,9 @@ const ManageUsers = () => {
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -104,6 +132,21 @@ const ManageUsers = () => {
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                         Active
                       </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      {user.username !== 'admin' ? (
+                        <button
+                          onClick={() => handleDeleteUser(user.id, user.username)}
+                          className="text-red-600 hover:text-red-900 transition-colors duration-200"
+                          title="Delete user"
+                        >
+                          <FiTrash2 className="h-5 w-5" />
+                        </button>
+                      ) : (
+                        <span className="text-gray-400" title="Cannot delete admin user">
+                          <FiTrash2 className="h-5 w-5" />
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}

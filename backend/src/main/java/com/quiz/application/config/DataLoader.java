@@ -55,6 +55,29 @@ public class DataLoader implements CommandLineRunner {
                 createWebDevQuiz(adminUser);
                 System.out.println("Created 5 sample quizzes with questions");
             }
+        } else {
+            // Check if specific quizzes exist and create missing ones
+            System.out.println("Quizzes exist, checking for missing ones...");
+            User adminUser = userService.getUserByUsername("admin").orElse(null);
+            
+            if (adminUser != null) {
+                if (!quizRepository.existsByTitle("React Fundamentals Quiz")) {
+                    System.out.println("Creating React Fundamentals Quiz...");
+                    createReactQuiz(adminUser);
+                }
+                if (!quizRepository.existsByTitle("Database Fundamentals Quiz")) {
+                    System.out.println("Creating Database Fundamentals Quiz...");
+                    createDatabaseQuiz(adminUser);
+                }
+                if (!quizRepository.existsByTitle("Python Programming Quiz")) {
+                    System.out.println("Creating Python Programming Quiz...");
+                    createPythonQuiz(adminUser);
+                }
+                if (!quizRepository.existsByTitle("Web Development Quiz")) {
+                    System.out.println("Creating Web Development Quiz...");
+                    createWebDevQuiz(adminUser);
+                }
+            }
         }
         
         System.out.println("DataLoader completed successfully!");
